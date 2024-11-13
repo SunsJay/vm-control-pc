@@ -1,5 +1,7 @@
 use std::{env, fs};
 use log::{error, info};
+use serde_json::Value;
+
 
 pub fn get_vm_info(suffix: &str)  {
     let dir_path = env::var("ZI_PAN").expect("ZI_PAN 没有在 .env 文件里设置");
@@ -19,7 +21,13 @@ pub fn get_vm_info(suffix: &str)  {
                                 if ext == suffix {
                                     // info!("找到.vmxqstatus文件: {}", sub_path.display());
                                     if let Ok(content) = fs::read_to_string(&sub_path) {
-                                        info!("文件内容 {}: \n{}", sub_path.display(), content);
+                                        info!("文件内容 {}: \n{}", sub_path.display(), &content);
+                                        if let Ok(json_data) = serde_json::from_str::<Value>(&content) {
+                                            // JSON data is successfully parsed
+                                            info!("Parsed JSON data: {:#?}", json_data);
+                                        } else {
+                                            error!("Error parsing JSON data in file: {}", path.display());
+                                        }
                                     } else {
                                         error!("读取文件错误: {}", sub_path.display());
                                     }
