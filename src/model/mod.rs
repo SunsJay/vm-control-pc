@@ -1,30 +1,33 @@
 use std::fmt;
 use serde::Deserialize;
 
+use serde::Deserialize;
+
 #[derive(Debug, Deserialize)]
 pub struct VmxqStatus {
-    activated_time: String,
-    alive_time: u32,
-    available_time: String,
-    failed_time: String,
-    has_5ma: bool,
-    has_activated: bool,
-    has_cleared: bool,
-    has_copy_vmxl: bool,
-    has_copy_vmxq: bool,
-    has_deleted: bool,
-    has_failed: bool,
-    has_id: bool,
-    is_sending: bool,
-    login_failed: bool,
-    login_success: bool,
-    saohao_test_failed: bool,
-    saohao_test_success: bool,
-    send_failed: bool,
-    send_test_failed: bool,
-    send_test_success: bool,
-    silence_time: u32,
+    activated_time: Option<String>,
+    alive_time: Option<u32>,
+    available_time: Option<String>,
+    failed_time: Option<String>,
+    has_5ma: Option<bool>,
+    has_activated: Option<bool>,
+    has_cleared: Option<bool>,
+    has_copy_vmxl: Option<bool>,
+    has_copy_vmxq: Option<bool>,
+    has_deleted: Option<bool>,
+    has_failed: Option<bool>,
+    has_id: Option<bool>,
+    is_sending: Option<bool>,
+    login_failed: Option<bool>,
+    login_success: Option<bool>,
+    saohao_test_failed: Option<bool>,
+    saohao_test_success: Option<bool>,
+    send_failed: Option<bool>,
+    send_test_failed: Option<bool>,
+    send_test_success: Option<bool>,
+    silence_time: Option<u32>,
 }
+
 
 impl fmt::Display for VmxqStatus {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
