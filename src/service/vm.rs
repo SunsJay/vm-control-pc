@@ -13,14 +13,12 @@ pub fn get_vm_info(suffix: &str)  {
                 let path = entry.path();
                 if path.is_dir() {
                     info!("目录: {}", path.display());
-
                     if let Ok(sub_entries) = fs::read_dir(&path) {
                         for sub_entry in sub_entries {
                             let sub_path = sub_entry.expect("获取子盘的状态文件错误").path();
 
                             if let Some(ext) = sub_path.extension() {
                                 if ext == suffix {
-
                                     // info!("找到.vmxqstatus文件: {}", sub_path.display());
                                     if let Ok(content) = fs::read_to_string(&sub_path) {
                                         parse_json(&content);
