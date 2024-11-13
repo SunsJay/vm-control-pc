@@ -1,12 +1,43 @@
 use std::fmt;
 
+use diesel::{Queryable, Selectable};
+use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-
-
-#[derive(Debug, Deserialize,Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = crate::schema::vmxq_status)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[serde(rename_all = "camelCase")]
 pub struct VmxqStatus {
+    pub id: i32,
+    pub name: String,
+    pub has_deleted: Option<bool>,
+    pub has_id: Option<bool>,
+    pub has_5ma: Option<bool>,
+    pub has_failed: Option<bool>,
+    pub login_failed: Option<bool>,
+    pub send_failed: Option<bool>,
+    pub has_activated: Option<bool>,
+    pub login_success: Option<bool>,
+    pub send_test_success: Option<bool>,
+    pub send_test_failed: Option<bool>,
+    pub saohao_test_failed: Option<bool>,
+    pub saohao_test_success: Option<bool>,
+    pub silence_time: Option<i32>,
+    pub available_time: Option<String>,
+    pub failed_time: Option<String>,
+    pub alive_time: Option<i32>,
+    pub is_sending: Option<bool>,
+    pub activated_time: Option<String>,
+    pub has_copy_vmxq: Option<bool>,
+    pub has_copy_vmxl: Option<bool>,
+    pub has_cleared: Option<bool>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct VmxqStatusVar {
     has_deleted: Option<bool>,
     has_id: Option<bool>,
     has_5ma: Option<bool>,
@@ -20,7 +51,7 @@ pub struct VmxqStatus {
     saohao_test_failed: Option<bool>,
     saohao_test_success: Option<bool>,
     silence_time: Option<i32>,
-    availalbe_time: Option<String>,
+    available_time: Option<String>,
     failed_time: Option<String>,
     alive_time: Option<i32>,
     is_sending: Option<bool>,
@@ -31,9 +62,7 @@ pub struct VmxqStatus {
 }
 
 
-
-
-impl fmt::Display for VmxqStatus {
+impl fmt::Display for VmxqStatusVar {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "VmxqStatus:\n")?;
 
@@ -45,7 +74,7 @@ impl fmt::Display for VmxqStatus {
             write!(f, "Alive Time: {}\n", alive_time)?;
         }
 
-        if let Some(available_time) = &self.availalbe_time {
+        if let Some(available_time) = &self.available_time {
             write!(f, "Available Time: {}\n", available_time)?;
         }
 
