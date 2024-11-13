@@ -23,7 +23,7 @@ pub fn init() {
     init_env().ok();
     // let database_url = env::var("DATABASE_URL").expect("DATABASE_URL 没有在 .env 文件里设置");
 
-    get_vm_info()
+    get_vm_info("vmxqstatus")
 
 
 }
