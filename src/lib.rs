@@ -1,4 +1,3 @@
-use std::env;
 use crate::utils::env::init_env;
 use crate::utils::log::init_log;
 use crate::utils::time::start_time;
