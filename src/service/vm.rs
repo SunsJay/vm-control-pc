@@ -1,6 +1,7 @@
 use std::{env, fs};
 use log::{error, info};
 use serde_json::Value;
+use crate::utils::json::parse_json;
 
 
 pub fn get_vm_info(suffix: &str)  {
@@ -19,15 +20,10 @@ pub fn get_vm_info(suffix: &str)  {
 
                             if let Some(ext) = sub_path.extension() {
                                 if ext == suffix {
+
                                     // info!("找到.vmxqstatus文件: {}", sub_path.display());
                                     if let Ok(content) = fs::read_to_string(&sub_path) {
-                                        info!("文件内容 {}: \n{}", sub_path.display(), &content);
-                                        if let Ok(json_data) = serde_json::from_str::<Value>(&content) {
-                                            // JSON data is successfully parsed
-                                            info!("Parsed JSON data: {:#?}", json_data);
-                                        } else {
-                                            error!("Error parsing JSON data in file: {}", path.display());
-                                        }
+                                        parse_json(&content);
                                     } else {
                                         error!("读取文件错误: {}", sub_path.display());
                                     }
@@ -42,3 +38,4 @@ pub fn get_vm_info(suffix: &str)  {
         error!("读取子盘目录失败")
     }
 }
+
