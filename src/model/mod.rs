@@ -35,6 +35,16 @@ pub struct VmxqStatus {
     pub has_cleared: Option<bool>,
 }
 
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+#[derive(Insertable)]
+
+#[diesel(table_name = crate::schema::vmxq_status)]
+pub struct VmxqStatusNew {
+    pub name: String,
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VmxqStatusVar {

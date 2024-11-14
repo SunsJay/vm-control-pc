@@ -1,7 +1,16 @@
+/*
+ * @Date: 2024-11-13 15:25:48
+ * @LastEditors: sunsjay sunsjay0806@gmail.com
+ * @LastEditTime: 2024-11-14 22:30:54
+ * @FilePath: /vm-control/src/service/vm.rs
+ * @Description: 
+ */
 use std::{env, fs};
+use diesel::{ RunQueryDsl, SelectableHelper, SqliteConnection};
 use log::{error, info};
-
-use crate::utils::json::parse_json;
+use crate::schema::vmxq_status::dsl::*;
+use diesel::prelude::*;
+use crate::{schema::vmxq_status, utils::json::parse_json, VmxqStatus, VmxqStatusNew};
 
 
 pub fn get_vm_info(suffix: &str)  {
@@ -37,3 +46,23 @@ pub fn get_vm_info(suffix: &str)  {
     }
 }
 
+pub fn create_vm(conn: &mut SqliteConnection, vm_name: &str) -> VmxqStatus {
+
+
+    let vmxq_new = VmxqStatusNew {  name: vm_name.to_string() };
+    diesel::insert_into(vmxq_status::table).values(&vmxq_new).returning(VmxqStatus::as_returning())
+    .get_result(conn).expect("Error creating vm")
+
+}
+
+pub fn query_vmxq_status(connection: &mut SqliteConnection, target_id: i32)  {
+
+    let results = vmxq_status
+        .filter(id.eq(target_id))
+        .limit(1)
+        .select(VmxqStatus::as_select())
+        .load(connection)
+        .expect("查询失败");
+    println!("{:?}", results);
+    
+}
