@@ -7,3 +7,4 @@ custom_type_derives = ["diesel::query_builder::QueryId", "Clone"]
 
 [migrations_directory]
 dir = "/Users/sunsjay/Desktop/vm-control/migrations"
+#dir = "C:\\Users\\Administrator\\Desktop\\vm-control\\migrations"
