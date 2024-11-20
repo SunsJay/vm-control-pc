@@ -1,12 +1,12 @@
 use std::fmt;
 
-use diesel::{Queryable, Selectable};
+use crate::schema::*;
 use diesel::prelude::*;
+use diesel::{Queryable, Selectable};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize)]
-#[derive(Queryable, Selectable)]
-#[diesel(table_name = crate::schema::vmxq_status)]
+#[derive(Debug, Deserialize, Serialize, Queryable, Selectable, AsChangeset, Identifiable)]
+#[diesel(table_name = vmxq_status)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[serde(rename_all = "camelCase")]
 pub struct VmxqStatus {
@@ -35,42 +35,40 @@ pub struct VmxqStatus {
     pub has_cleared: Option<bool>,
 }
 
-
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 #[derive(Insertable)]
-
 #[diesel(table_name = crate::schema::vmxq_status)]
 pub struct VmxqStatusNew {
     pub name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Queryable, AsChangeset)]
 #[serde(rename_all = "camelCase")]
+#[diesel(table_name = crate::schema::vmxq_status)]
 pub struct VmxqStatusVar {
-    has_deleted: Option<bool>,
-    has_id: Option<bool>,
-    has_5ma: Option<bool>,
-    has_failed: Option<bool>,
-    login_failed: Option<bool>,
-    send_failed: Option<bool>,
-    has_activated: Option<bool>,
-    login_success: Option<bool>,
-    send_test_success: Option<bool>,
-    send_test_failed: Option<bool>,
-    saohao_test_failed: Option<bool>,
-    saohao_test_success: Option<bool>,
-    silence_time: Option<i32>,
-    available_time: Option<String>,
-    failed_time: Option<String>,
-    alive_time: Option<i32>,
-    is_sending: Option<bool>,
-    activated_time: Option<String>,
-    has_copy_vmxq: Option<bool>,
-    has_copy_vmxl: Option<bool>,
-    has_cleared: Option<bool>,
+    pub has_deleted: Option<bool>,
+    pub has_id: Option<bool>,
+    pub has_5ma: Option<bool>,
+    pub has_failed: Option<bool>,
+    pub login_failed: Option<bool>,
+    pub send_failed: Option<bool>,
+    pub has_activated: Option<bool>,
+    pub login_success: Option<bool>,
+    pub send_test_success: Option<bool>,
+    pub send_test_failed: Option<bool>,
+    pub saohao_test_failed: Option<bool>,
+    pub saohao_test_success: Option<bool>,
+    pub silence_time: Option<i32>,
+    pub available_time: Option<String>,
+    pub failed_time: Option<String>,
+    pub alive_time: Option<i32>,
+    pub is_sending: Option<bool>,
+    pub activated_time: Option<String>,
+    pub has_copy_vmxq: Option<bool>,
+    pub has_copy_vmxl: Option<bool>,
+    pub has_cleared: Option<bool>,
 }
-
 
 impl fmt::Display for VmxqStatusVar {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

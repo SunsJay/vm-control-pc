@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-11-13 15:25:48
  * @LastEditors: sunsjay sunsjay0806@gmail.com
- * @LastEditTime: 2024-11-20 21:48:56
+ * @LastEditTime: 2024-11-20 22:22:42
  * @FilePath: /vm-control/src/service/vm.rs
  * @Description: 
  */
@@ -34,7 +34,37 @@ pub fn get_vm_info(connection: &mut SqliteConnection, suffix: &str)  {
                                 if ext == suffix {
                                     // info!("找到.vmxqstatus文件: {}", sub_path.display());
                                     if let Ok(content) = fs::read_to_string(&sub_path) {
-                                        parse_json(&content);
+                                        let vmxq_status_var = parse_json(&content);
+
+                                        if let Some(vmxq_status_var) = vmxq_status_var {
+                                            update_vmxq_status(connection,  &VmxqStatus {
+                                                id: vmxq_new.id,
+                                                name: vm_name.clone(),
+                                                has_5ma: vmxq_status_var.has_5ma,
+                                                has_deleted: vmxq_status_var.has_deleted,
+                                                has_id: vmxq_status_var.has_id,
+                                                has_failed: vmxq_status_var.has_failed,
+                                                login_failed: vmxq_status_var.login_failed,
+                                                send_failed: vmxq_status_var.send_failed,
+                                                has_activated: vmxq_status_var.has_activated,
+                                                login_success: vmxq_status_var.login_success,
+                                                send_test_success: vmxq_status_var.send_test_success,
+                                                send_test_failed: vmxq_status_var.send_test_failed,
+                                                saohao_test_failed: vmxq_status_var.saohao_test_failed,
+                                                saohao_test_success: vmxq_status_var.saohao_test_success,
+                                                silence_time: vmxq_status_var.silence_time,
+                                                available_time: vmxq_status_var.available_time,
+                                                failed_time: vmxq_status_var.failed_time,
+                                                alive_time: vmxq_status_var.alive_time,
+                                                is_sending: vmxq_status_var.is_sending,
+                                                activated_time: vmxq_status_var.activated_time,
+                                                has_copy_vmxq: vmxq_status_var.has_copy_vmxq,
+                                                has_copy_vmxl: vmxq_status_var.has_copy_vmxl,
+                                                has_cleared: vmxq_status_var.has_cleared,
+                    
+                                                
+                                            });
+                                        }
                                     } else {
                                         error!("读取文件错误: {}", sub_path.display());
                                     }
@@ -69,4 +99,11 @@ pub fn query_vmxq_status(connection: &mut SqliteConnection, target_id: i32)  {
         .expect("查询失败");
     println!("{:?}", results);
     
+}
+
+pub fn update_vmxq_status(connection: &mut SqliteConnection, vmxq_status_new: &VmxqStatus)  {
+    diesel::update(vmxq_status::table.find(vmxq_status_new.id))
+        .set(vmxq_status_new)
+        .execute(connection)
+        .expect("更新vmxq失败");
 }
