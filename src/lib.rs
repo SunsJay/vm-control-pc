@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-11-12 19:07:07
  * @LastEditors: sunsjay sunsjay0806@gmail.com
- * @LastEditTime: 2024-11-20 21:50:11
+ * @LastEditTime: 2024-11-20 21:51:13
  * @FilePath: /vm-control/src/lib.rs
  * @Description:
  */
@@ -14,7 +14,6 @@ use crate::utils::log::init_log;
 use crate::utils::time::start_time;
 
 use db::DBPOOL;
-use service::vm::{create_vm, query_vmxq_status};
 pub mod config;
 
 pub mod global;
@@ -37,10 +36,4 @@ pub fn init() {
     
     get_vm_info(connection,"vmxqstatus");
 
-
-    // let vm_name: String = "1234567".to_string();
-
-    // let vmxq_new = create_vm(connection, &vm_name);
-
-    // query_vmxq_status(connection, vmxq_new.id);
 }
