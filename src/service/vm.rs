@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-11-13 15:25:48
  * @LastEditors: sunsjay sunsjay0806@gmail.com
- * @LastEditTime: 2024-11-15 22:11:36
+ * @LastEditTime: 2024-11-20 21:48:56
  * @FilePath: /vm-control/src/service/vm.rs
  * @Description: 
  */
@@ -13,7 +13,7 @@ use diesel::prelude::*;
 use crate::{schema::vmxq_status, utils::json::parse_json, VmxqStatus, VmxqStatusNew};
 
 
-pub fn get_vm_info(suffix: &str)  {
+pub fn get_vm_info(connection: &mut SqliteConnection, suffix: &str)  {
     let dir_path = env::var("ZI_PAN").expect("ZI_PAN 没有在 .env 文件里设置");
 
     if let Ok(entries) = fs::read_dir(dir_path) {
@@ -22,6 +22,10 @@ pub fn get_vm_info(suffix: &str)  {
                 let path = entry.path();
                 if path.is_dir() {
                     info!("目录: {}", path.display()); 
+                    let vm_name = format!("{}", path.display());
+                    let vmxq_new = create_vm(connection, &vm_name);
+
+                    query_vmxq_status(connection, vmxq_new.id);
                     if let Ok(sub_entries) = fs::read_dir(&path) {
                         for sub_entry in sub_entries {
                             let sub_path = sub_entry.expect("获取子盘的状态文件错误").path();
