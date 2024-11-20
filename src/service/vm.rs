@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-11-13 15:25:48
  * @LastEditors: sunsjay sunsjay0806@gmail.com
- * @LastEditTime: 2024-11-14 22:30:54
+ * @LastEditTime: 2024-11-15 22:11:36
  * @FilePath: /vm-control/src/service/vm.rs
  * @Description: 
  */
@@ -21,7 +21,7 @@ pub fn get_vm_info(suffix: &str)  {
             if let Ok(entry) = entry {
                 let path = entry.path();
                 if path.is_dir() {
-                    info!("目录: {}", path.display());
+                    info!("目录: {}", path.display()); 
                     if let Ok(sub_entries) = fs::read_dir(&path) {
                         for sub_entry in sub_entries {
                             let sub_path = sub_entry.expect("获取子盘的状态文件错误").path();

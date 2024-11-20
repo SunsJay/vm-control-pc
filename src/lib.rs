@@ -5,7 +5,7 @@
  * @FilePath: /vm-control/src/lib.rs
  * @Description:
  */
-use crate::db::establish_connection;
+
 use crate::model::*;
 
 use crate::service::vm::get_vm_info;
@@ -13,6 +13,7 @@ use crate::utils::env::init_env;
 use crate::utils::log::init_log;
 use crate::utils::time::start_time;
 
+use db::DBPOOL;
 use service::vm::{create_vm, query_vmxq_status};
 pub mod config;
 
@@ -32,7 +33,7 @@ pub fn init() {
     start_time();
     init_env().ok();
 
-    let connection = &mut establish_connection();
+    let connection = &mut DBPOOL.get().unwrap();
     
     get_vm_info("vmxqstatus");
 
